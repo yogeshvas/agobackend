@@ -12,6 +12,10 @@ const userSchema = new Schema(
       type: String,
       required: true,
     },
+    password: {
+      type: String,
+      required: true,
+    },
     services: [
       {
         type: Schema.Types.ObjectId,
