@@ -1,4 +1,5 @@
 import { User } from "../models/user.js";
+import jwt from "jsonwebtoken";
 
 export const registerUser = async (req, res) => {
   const { name, phoneNo, password } = req.body;
@@ -25,5 +26,23 @@ export const registerUser = async (req, res) => {
   return res.status(201).json({
     success: true,
     msg: "User registered successfully",
+  });
+};
+
+export const login = async (req, res) => {
+  const { phoneNo, password } = req.body;
+  const user = await User.findOne({ phoneNo });
+  if (!user) {
+    return res.status(400).json({
+      success: false,
+      message: "user doesn't exists",
+    });
+  }
+  const payload = { userId: user._id, name: user.name };
+  const token = jwt.sign(payload, process.env.JWT_SECRET);
+  return res.status(200).json({
+    success: true,
+    message: "User logged in successfully",
+    token,
   });
 };
