@@ -46,3 +46,13 @@ export const login = async (req, res) => {
     token,
   });
 };
+
+export const userTest = async (req, res) => {
+  try {
+    res.status(200).json({
+      message: "Hello from user route",
+    });
+  } catch (error) {
+    console.log("error", error);
+  }
+};
