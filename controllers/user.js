@@ -31,20 +31,37 @@ export const registerUser = async (req, res) => {
 
 export const login = async (req, res) => {
   const { phoneNo, password } = req.body;
-  const user = await User.findOne({ phoneNo });
-  if (!user) {
-    return res.status(400).json({
+  try {
+    const user = await User.findOne({ phoneNo });
+    if (!user) {
+      return res.status(400).json({
+        success: false,
+        message: "User doesn't exist",
+      });
+    }
+
+    // Direct string comparison for the password
+    if (user.password !== password) {
+      return res.status(400).json({
+        success: false,
+        message: "Incorrect password",
+      });
+    }
+
+    const payload = { userId: user._id, name: user.name };
+    const token = jwt.sign(payload, process.env.JWT_SECRET);
+    return res.status(200).json({
+      success: true,
+      message: "User logged in successfully",
+      token,
+    });
+  } catch (error) {
+    console.error("Login error:", error);
+    return res.status(500).json({
       success: false,
-      message: "user doesn't exists",
+      message: "Internal server error",
     });
   }
-  const payload = { userId: user._id, name: user.name };
-  const token = jwt.sign(payload, process.env.JWT_SECRET);
-  return res.status(200).json({
-    success: true,
-    message: "User logged in successfully",
-    token,
-  });
 };
 
 export const userTest = async (req, res) => {
