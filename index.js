@@ -4,6 +4,7 @@ import connectDB from "./db/index.js";
 import dotenv from "dotenv";
 import bodyParser from "body-parser";
 import userRoutes from "./routes/userRoutes.js";
+import cabRoutes from "./routes/cabOrderRoutes.js";
 
 dotenv.config();
 
@@ -18,6 +19,7 @@ app.use(bodyParser.json());
 
 // Routes
 app.use("/api/v1/users", userRoutes);
+app.use("/api/v1/cab", cabRoutes);
 
 // Error Handling Middleware
 app.use((err, req, res, next) => {
