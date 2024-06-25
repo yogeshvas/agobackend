@@ -1,5 +1,6 @@
 import { CabOrder } from "../models/cab-order.js";
 import jwt from "jsonwebtoken";
+import Rate from "../models/rate.js";
 
 export const bookCab = async (req, res) => {
   try {
@@ -39,5 +40,18 @@ export const bookCab = async (req, res) => {
       message: "An error occurred while booking the cab",
       error: error.message,
     });
+  }
+};
+
+export const getRate = async (req, res) => {
+  try {
+    const rates = await Rate.find();
+    if (!rates) {
+      return res.status(404).json({ message: "Rates not found" });
+    }
+    res.status(200).json(rates);
+  } catch (error) {
+    console.error("Error fetching rates:", error);
+    res.status(500).json({ message: "Server Error" });
   }
 };

@@ -73,3 +73,8 @@ export const userTest = async (req, res) => {
     console.log("error", error);
   }
 };
+
+
+export const fetchPrice = async (req,res)=> {
+  
+}
