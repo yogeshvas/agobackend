@@ -39,7 +39,7 @@ const cabOrderSchema = new mongoose.Schema(
       default: "REQUESTED",
     },
     date: {
-      type: Date,
+      type: String,
       default: Date.now(),
     },
     time: {
