@@ -1,3 +1,4 @@
+import { CabOrder } from "../models/cab-order.js";
 import { User } from "../models/user.js";
 import jwt from "jsonwebtoken";
 
@@ -54,6 +55,7 @@ export const login = async (req, res) => {
       success: true,
       message: "User logged in successfully",
       token,
+      username: user.name,
     });
   } catch (error) {
     console.error("Login error:", error);
@@ -74,4 +76,26 @@ export const userTest = async (req, res) => {
   }
 };
 
-export const fetchPrice = async (req, res) => {};
+export const getActiveRequests = async (req, res) => {
+  const { token } = req.headers;
+  if (!token) {
+    return res.status(401).json({ message: "Token is required" });
+  }
+
+  try {
+    const decodedUser = jwt.verify(token, process.env.JWT_SECRET);
+    const userId = decodedUser.userId;
+
+    // Assuming you have a CabOrder model defined
+
+    const activeOrders = await CabOrder.find({
+      user: userId,
+      status: { $in: ["REQUESTED", "ACCEPTED"] },
+    });
+
+    res.status(200).json(activeOrders);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
