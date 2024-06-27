@@ -74,7 +74,4 @@ export const userTest = async (req, res) => {
   }
 };
 
-
-export const fetchPrice = async (req,res)=> {
-  
-}
+export const fetchPrice = async (req, res) => {};

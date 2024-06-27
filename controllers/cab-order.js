@@ -5,7 +5,7 @@ import Rate from "../models/rate.js";
 export const bookCab = async (req, res) => {
   try {
     const { token } = req.headers; // Use headers to get token
-    const { startLat, startLong, endLat, endLong } = req.body;
+    const { startLat, startLong, endLat, endLong, date, time } = req.body;
 
     if (!token) {
       return res.status(401).json({ message: "Token is required" });
@@ -31,6 +31,8 @@ export const bookCab = async (req, res) => {
         longitude: endLong,
       },
       status: "REQUESTED", // Default status
+      date: date,
+      time: time,
     });
 
     res.status(201).json({ message: "Cab order successfully", cabOrder });

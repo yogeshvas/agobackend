@@ -3,6 +3,6 @@ import { bookCab, getRate } from "../controllers/cab-order.js";
 
 const router = Router();
 
-router.route("/cabbook").post(bookCab);
+router.route("/bookcab").post(bookCab);
 router.route("/getrate").get(getRate);
 export default router;
