@@ -1,6 +1,7 @@
 import { CabOrder } from "../models/cab-order.js";
 
 import moment from "moment";
+import { Driver } from "../models/driver.js";
 
 export const dashboardData = async (req, res) => {
   try {
@@ -34,12 +35,36 @@ export const dashboardData = async (req, res) => {
 
 export const cabOrdersData = async (req, res) => {
   try {
-    const orders = await CabOrder.find().populate("user");
+    const orders = await CabOrder.find()
+      .populate("user")
+      .sort({ createdAt: -1 });
+
     return res.status(200).json(orders);
   } catch (error) {
     console.error("Error fetching cab orders:", error);
     return res
       .status(500)
       .json({ message: "Internal Server Error", error: error.message });
+  }
+};
+
+export const driverAvailableForOrders = async (req, res) => {
+  try {
+    const drivers = await Driver.find({ status: true }).select(
+      "_id name carNumber phone"
+    );
+    return res.status(200).json(drivers);
+  } catch (error) {
+    console.error("Error fetching drivers:", error);
+    return res.status(500).json({ error: error.message });
+  }
+};
+
+export const allDrivers = async (req, res) => {
+  try {
+    const drivers = await Driver.find();
+    return res.status(200).json(drivers);
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
   }
 };
