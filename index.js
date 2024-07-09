@@ -5,7 +5,7 @@ import dotenv from "dotenv";
 import bodyParser from "body-parser";
 import userRoutes from "./routes/userRoutes.js";
 import cabRoutes from "./routes/cabOrderRoutes.js";
-
+import adminRoutes from "./routes/adminRoutes.js";
 dotenv.config();
 
 const app = express();
@@ -20,7 +20,11 @@ app.use(bodyParser.json());
 // Routes
 app.use("/api/v1/users", userRoutes);
 app.use("/api/v1/cab", cabRoutes);
+app.use("/api/v1/admin", adminRoutes);
 
+app.get("/", (req, res) => {
+  res.send("Backend is working fine!");
+});
 // Error Handling Middleware
 app.use((err, req, res, next) => {
   console.error(err.stack);
