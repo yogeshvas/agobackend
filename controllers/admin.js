@@ -21,8 +21,8 @@ export const dashboardData = async (req, res) => {
     // Find the 5 most recent orders
     const fiveMostRecentOrders = await CabOrder.find({})
       .sort({ createdAt: -1 })
-      .limit(5);
-
+      .limit(5)
+      .populate("user driver");
     return res.status(200).json({
       cabOrders: cabOrdersNumber,
       fiveMostRecentOrders,
@@ -37,7 +37,8 @@ export const cabOrdersData = async (req, res) => {
   try {
     const orders = await CabOrder.find()
       .populate("user")
-      .sort({ createdAt: -1 });
+      .sort({ createdAt: -1 })
+      .populate("driver");
 
     return res.status(200).json(orders);
   } catch (error) {
@@ -71,7 +72,6 @@ export const allDrivers = async (req, res) => {
 
 export const allotDriver = async (req, res) => {
   try {
- 
     const { cabOrderId, driverId } = req.body;
     console.log(cabOrderId, driverId);
     // Validate cabOrderId and driverId
