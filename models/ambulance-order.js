@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const cabOrderSchema = new mongoose.Schema(
+const ambulanceOrderSchema = new mongoose.Schema(
   {
     user: {
       type: mongoose.Schema.Types.ObjectId,
@@ -52,4 +52,7 @@ const cabOrderSchema = new mongoose.Schema(
   }
 );
 
-export const CabOrder = mongoose.model("CabOrder", cabOrderSchema);
+export const AmbulanceOrder = mongoose.model(
+  "AmbulanceOrder",
+  ambulanceOrderSchema
+   );
