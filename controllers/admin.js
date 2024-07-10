@@ -68,3 +68,42 @@ export const allDrivers = async (req, res) => {
     return res.status(500).json({ error: error.message });
   }
 };
+
+export const allotDriver = async (req, res) => {
+  try {
+ 
+    const { cabOrderId, driverId } = req.body;
+    console.log(cabOrderId, driverId);
+    // Validate cabOrderId and driverId
+    if (!cabOrderId || !driverId) {
+      return res
+        .status(400)
+        .json({ message: "Cab Order ID and Driver ID are required" });
+    }
+
+    const cabOrder = await CabOrder.findById(cabOrderId);
+
+    // Check if the cab order exists
+    if (!cabOrder) {
+      return res.status(404).json({ message: "Cab Order not found" });
+    }
+
+    // Check if the driver exists (assuming you have a Driver model)
+    const driver = await Driver.findById(driverId);
+    if (!driver) {
+      return res.status(404).json({ message: "Driver not found" });
+    }
+
+    // Update the cab order
+    cabOrder.status = "ACCEPTED";
+    cabOrder.driver = driverId;
+    await cabOrder.save();
+    const finalResponse = await CabOrder.findById(cabOrderId).populate(
+      "driver"
+    );
+    return res.status(200).json({ message: "Driver Alloted", finalResponse });
+  } catch (error) {
+    console.error("Error allotting driver:", error);
+    return res.status(500).json({ message: "Internal Server Error" });
+  }
+};

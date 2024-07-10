@@ -91,7 +91,7 @@ export const getActiveRequests = async (req, res) => {
     const activeOrders = await CabOrder.find({
       user: userId,
       status: { $in: ["REQUESTED", "ACCEPTED"] },
-    });
+    }).populate("driver");
 
     res.status(200).json(activeOrders);
   } catch (err) {
