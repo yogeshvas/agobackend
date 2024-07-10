@@ -59,6 +59,10 @@ const driverSchema = new mongoose.Schema(
       type: Boolean,
       required: true,
     },
+    driverType: {
+      type: String,
+      enum: ["cab", "ambulance"],
+    },
   },
   {
     timestamps: true,
