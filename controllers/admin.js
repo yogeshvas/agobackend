@@ -22,8 +22,7 @@ export const dashboardData = async (req, res) => {
     const fiveMostRecentOrders = await CabOrder.find({})
       .sort({ createdAt: -1 })
       .limit(5)
-      .populate("user");
-
+      .populate("user driver");
     return res.status(200).json({
       cabOrders: cabOrdersNumber,
       fiveMostRecentOrders,
